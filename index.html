@@ -3,124 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathis | Portfolio IT</title>
+    <title>Mathis | Portfolio</title>
     <style>
-        /* Style moderne et minimaliste */
+        /* Couleurs issues de ton image */
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-            --accent: #38bdf8;
+            --bg-dark: #3d3d3d; /* Gris anthracite */
+            --card-bg: #5a5a5a; /* Gris plus clair pour les blocs */
+            --text-white: #ffffff;
+            --accent: #9ca3af; /* Gris lunaire */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+            font-family: 'Georgia', serif; /* Police plus élégante/mystique */
+            background-color: var(--bg-dark);
+            color: var(--text-white);
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Décorations lunes (SVG intégrés pour que ça marche direct) */
+        .moon-top {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            opacity: 0.8;
+        }
+
+        .moon-bottom {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 80px;
+            opacity: 0.6;
+            z-index: -1;
         }
 
         header {
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 2px solid var(--accent);
+            text-align: center;
+            padding: 80px 20px;
         }
 
-        h1 { font-size: 3rem; margin-bottom: 10px; }
-        .tagline { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-top: 10px;
+        }
 
         .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        section { margin-bottom: 60px; }
-        h2 { border-left: 4px solid var(--accent); padding-left: 15px; margin-bottom: 30px; }
+        /* Les blocs arrondis comme sur ton image */
+        .section-box {
+            background-color: var(--card-bg);
+            border-radius: 50px; /* Bordures très arrondies */
+            padding: 30px 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-        .grid {
+        h2 {
+            font-style: italic;
+            border-bottom: 1px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
 
-        .card {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-            border: 1px solid #334155;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .badge {
-            background: var(--accent);
-            color: var(--bg);
-            padding: 4px 10px;
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent);
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
         }
 
         footer {
             text-align: center;
             padding: 40px;
-            font-size: 0.9rem;
-            color: #94a3b8;
+            font-size: 0.8rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
+    <img src="https://cdn-icons-png.flaticon.com/512/1803/1803125.png" class="moon-top" alt="moon">
+
     <header>
         <h1>Mathis</h1>
-        <p class="tagline">Futur Expert IT |</p>
+        <div class="subtitle">Futur Expert IT | Développeur | Passionné</div>
     </header>
 
     <div class="container">
         
-        <section id="about">
+        <section class="section-box">
             <h2>À propos</h2>
-            <p>Bonjour ! Je suis Mathis, je construis ce portfolio pour partager mes projets et mon évolution dans le monde de l'informatique.</p>
+            <p>Bonjour ! Je suis Mathis, étudiant passionné par les infrastructures réseau et le développement. Bienvenue dans mon univers technique sous les étoiles.</p>
         </section>
 
-        <section id="projects">
-            <h2>Mes Projets</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Projet Lunoxe</h3>
-                    <p>Une description rapide de ce que fait ton projet Lunoxe. Par exemple, un outil d'automatisation ou une application web.</p>
-                    <span class="badge">Python</span> <span class="badge">API</span>
+        <section id="projets">
+            <h2 style="margin-left: 20px;">Mes Projets</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Lunoxe</h3>
+                    <p>Script d'automatisation</p>
                 </div>
-
-                <div class="card">
-                    <h3>Infrastructure Réseau</h3>
-                    <p>Simulation d'un réseau d'entreprise sécurisé sous Cisco Packet Tracer avec VLANs et Routage.</p>
-                    <span class="badge">Réseau</span> <span class="badge">Sécurité</span>
+                <div class="project-card">
+                    <h3>SkyNet</h3>
+                    <p>Infrastructure Réseau</p>
+                </div>
+                <div class="project-card">
+                    <h3>Astro-Code</h3>
+                    <p>Application Web</p>
                 </div>
             </div>
         </section>
 
-        <section id="contact">
+        <section class="section-box" style="margin-top: 50px;">
             <h2>Contact</h2>
-            <p>Envie de discuter d'un projet ? Retrouvez-moi sur :</p>
-            <p>
-                <strong>Email :</strong> ton.email@exemple.com<br>
-                <strong>GitHub :</strong> github.com/gilmathis498-create
-            </p>
+            <p>Email : mathis@example.com</p>
+            <p>GitHub : @gilmathis498-create</p>
         </section>
 
     </div>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/547/547433.png" class="moon-bottom" alt="moon-bottom">
 
     <footer>
         &copy; 2026 - Créé avec passion par Mathis
