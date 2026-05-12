@@ -140,8 +140,9 @@
         /* Grille de projets */
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
+            justify-content: center; /* Centre les cartes si elles ne sont pas nombreuses */
         }
 
         .project-card {
@@ -153,6 +154,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            max-width: 450px; /* Évite que la carte soit trop large toute seule */
+            margin: 0 auto; /* Centre la carte horizontalement */
         }
 
         .project-card:hover {
@@ -228,7 +231,6 @@
         <section class="about-box">
             <h2>À propos</h2>
             <p>Bonjour ! Je suis étudiant dans le domaine de l'IT en BTS SIO SISR</p>
-            
             <a href="cv.html" class="cv-button">Voir mon CV complet 📄</a>
         </section>
 
@@ -242,19 +244,9 @@
         <div class="stars-divider">✦ ✶ ✦</div>
 
         <section id="projets">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 30px;">Mes Projets</h2>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 30px; text-align: center;">Mes Projets</h2>
             
             <div class="project-grid">
-                <div class="project-card">
-                    <div>
-                        <h3>Code adapter</h3>
-                        <p>Développement d'infrastructures réseaux et optimisation de scripts système.</p>
-                    </div>
-                    <div class="tags">
-                        <span class="tag">Python</span> <span class="tag">Réseau</span>
-                    </div>
-                </div>
-
                 <div class="project-card">
                     <div>
                         <h3>Lunoxe</h3>
