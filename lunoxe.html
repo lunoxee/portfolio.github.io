@@ -185,12 +185,32 @@
             line-height: 1.8;
             overflow-x: hidden;
             position: relative;
+            isolation: isolate;
+        }
+
+        .scroll-moon {
+            position: fixed;
+            top: 20vh;
+            right: clamp(-110px, -7vw, -45px);
+            width: clamp(190px, 27vw, 340px);
+            aspect-ratio: 1;
+            background: url("Lune 2.png") no-repeat center;
+            background-size: contain;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 0 42px rgba(210, 220, 255, 0.24)) blur(0.2px);
+            transform: translate3d(var(--moon-x, 0px), var(--moon-y, 0px), 0) rotate(var(--moon-rotate, -12deg));
+            transition: opacity 0.3s ease;
+            will-change: transform;
         }
 
         .container {
             max-width: 850px;
             margin: 0 auto;
             padding: 60px 20px;
+            position: relative;
+            z-index: 1;
         }
 
         header {
@@ -282,6 +302,8 @@
             font-size: 0.8rem;
             color: #888;
             animation: fadeInDown 1s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         /* LUNES DECORATIVES */
@@ -318,6 +340,7 @@
 <body>
     <div class="moon-top"></div>
     <div class="moon-bottom"></div>
+    <div class="scroll-moon" aria-hidden="true"></div>
 
     <div class="container">
         <header>
@@ -371,6 +394,18 @@
     </div>
 
     <script>
+        // Lune de fond synchronisee avec le scroll
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const scrollMoon = document.querySelector('.scroll-moon');
+
+            if (scrollMoon) {
+                scrollMoon.style.setProperty('--moon-x', `${Math.min(scrolled * 0.08, 130)}px`);
+                scrollMoon.style.setProperty('--moon-y', `${Math.min(scrolled * 0.22, 380)}px`);
+                scrollMoon.style.setProperty('--moon-rotate', `${-12 + scrolled * 0.012}deg`);
+            }
+        });
+
         // Animation d'entrée des éléments
         const observerOptions = {
             threshold: 0.1,

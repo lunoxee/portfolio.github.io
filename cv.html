@@ -212,6 +212,26 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .scroll-moon {
+            position: fixed;
+            top: 18vh;
+            left: clamp(-100px, -6vw, -35px);
+            width: clamp(180px, 26vw, 330px);
+            aspect-ratio: 1;
+            background: url("Lune 1.png") no-repeat center;
+            background-size: contain;
+            opacity: 0.16;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 0 42px rgba(210, 220, 255, 0.24)) blur(0.2px);
+            transform: translate3d(var(--moon-x, 0px), var(--moon-y, 0px), 0) rotate(var(--moon-rotate, 10deg));
+            transition: opacity 0.3s ease;
+            will-change: transform;
         }
 
         .container {
@@ -226,6 +246,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             animation: fadeInDown 0.8s ease-out;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .container:hover {
@@ -309,6 +331,8 @@
             max-width: 900px;
             margin: 20px auto;
             text-align: left;
+            position: relative;
+            z-index: 1;
         }
 
         .back-link {
@@ -367,6 +391,7 @@
 <body>
     <div class="moon-top"></div>
     <div class="moon-bottom"></div>
+    <div class="scroll-moon" aria-hidden="true"></div>
 
     <div class="back-nav">
         <a href="index.html" class="back-link">← Retour au Portfolio</a>
@@ -465,10 +490,17 @@
         window.addEventListener('scroll', function() {
             const scrolled = window.pageYOffset;
             const rate = scrolled * -0.5;
+            const scrollMoon = document.querySelector('.scroll-moon');
 
             // Appliquer l'effet parallax aux lunes décoratives
             const moonTop = document.querySelector('.moon-top');
             const moonBottom = document.querySelector('.moon-bottom');
+
+            if (scrollMoon) {
+                scrollMoon.style.setProperty('--moon-x', `${Math.min(scrolled * 0.07, 120)}px`);
+                scrollMoon.style.setProperty('--moon-y', `${Math.min(scrolled * 0.2, 360)}px`);
+                scrollMoon.style.setProperty('--moon-rotate', `${10 - scrolled * 0.012}deg`);
+            }
 
             if (moonTop) {
                 moonTop.style.transform = `translateY(${rate * 0.3}px)`;
