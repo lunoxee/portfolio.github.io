@@ -920,7 +920,11 @@
         let lastScrollSoundAt = 0;
         let lastScrollY = window.pageYOffset;
         let musicThemeTrack = null;
-        const musicThemeTrackStart = 4.5;
+        let scrollPauseTimer = null;
+        let vinylPauseTimer = null;
+        const musicThemeTrackStart = 5.5;
+        const scrollPauseDelay = 320;
+        const vinylSpinDuration = 900;
         const musicThemeTrackSrc = 'SCH - Deux mille Piano Cover Tutorial Instrumental.mp3';
 
         function getMusicThemeTrack() {
@@ -948,8 +952,24 @@
         }
 
         function pauseMusicThemeTrack() {
+            clearTimeout(scrollPauseTimer);
+            clearTimeout(vinylPauseTimer);
             if (musicThemeTrack) {
                 musicThemeTrack.pause();
+            }
+        }
+
+        function pauseMusicThemeTrackSoon(delay, timerName) {
+            if (timerName === 'scroll') {
+                clearTimeout(scrollPauseTimer);
+                scrollPauseTimer = setTimeout(() => {
+                    if (musicThemeTrack) musicThemeTrack.pause();
+                }, delay);
+            } else {
+                clearTimeout(vinylPauseTimer);
+                vinylPauseTimer = setTimeout(() => {
+                    if (musicThemeTrack) musicThemeTrack.pause();
+                }, delay);
             }
         }
 
@@ -959,15 +979,17 @@
             }
 
             const now = Date.now();
-            if (now - lastScrollSoundAt < 350) {
+            if (now - lastScrollSoundAt < 120) {
                 return;
             }
             lastScrollSoundAt = now;
             playMusicThemeTrack(false);
+            pauseMusicThemeTrackSoon(scrollPauseDelay, 'scroll');
         }
 
         function playVinylIntroTone() {
             playMusicThemeTrack(true);
+            pauseMusicThemeTrackSoon(vinylSpinDuration, 'vinyl');
         }
 
         function dropMusicNote() {
