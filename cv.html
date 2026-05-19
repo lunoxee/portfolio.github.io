@@ -873,6 +873,7 @@
             themeButton.setAttribute('aria-label', musicEnabled ? 'Desactiver le theme musique' : 'Activer le theme musique');
             // When music theme is active show moon icon (to switch to moon), otherwise show music note
             if (themeButton) themeButton.textContent = musicEnabled ? '☾' : '♪';
+            if (!musicEnabled) pauseMusicThemeTrack();
         });
 
         // Contact form handling: Formspree placeholder + mailto fallback
@@ -918,64 +919,38 @@
         const musicNotes = ['♪', '♫', '♬', '♩'];
         let lastScrollSoundAt = 0;
         let lastScrollY = window.pageYOffset;
-        let scrollMotifIndex = 0;
-        let scrollAudioContext = null;
-        const scrollPianoMotif = [196, 246.94, 293.66, 349.23, 329.63, 246.94, 220, 196];
-        const vinylIntroMotif = [
-            { freq: 196, delay: 0, duration: 0.34 },
-            { freq: 246.94, delay: 0.18, duration: 0.34 },
-            { freq: 293.66, delay: 0.36, duration: 0.36 },
-            { freq: 392, delay: 0.58, duration: 0.46 },
-            { freq: 369.99, delay: 0.82, duration: 0.58 }
-        ];
+        let musicThemeTrack = null;
+        const musicThemeTrackStart = 4.5;
+        const musicThemeTrackSrc = 'SCH - Deux mille Piano Cover Tutorial Instrumental.mp3';
 
-        function getScrollAudioContext() {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) {
-                return null;
+        function getMusicThemeTrack() {
+            if (!musicThemeTrack) {
+                musicThemeTrack = new Audio(musicThemeTrackSrc);
+                musicThemeTrack.preload = 'auto';
+                musicThemeTrack.volume = 0.58;
             }
 
-            if (!scrollAudioContext) {
-                scrollAudioContext = new AudioContext();
-            }
-
-            if (scrollAudioContext.state === 'suspended') {
-                scrollAudioContext.resume();
-            }
-
-            return scrollAudioContext;
+            return musicThemeTrack;
         }
 
-        function playPianoNote(frequency, startAt, duration, volume = 0.05) {
-            const context = getScrollAudioContext();
-            if (!context) {
+        function playMusicThemeTrack(restart) {
+            if (!document.body.classList.contains('music-theme')) {
+                pauseMusicThemeTrack();
                 return;
             }
 
-            const body = context.createOscillator();
-            const shimmer = context.createOscillator();
-            const gain = context.createGain();
-            const filter = context.createBiquadFilter();
+            const track = getMusicThemeTrack();
+            if (restart || track.paused || track.ended || track.currentTime < musicThemeTrackStart) {
+                track.currentTime = musicThemeTrackStart;
+            }
 
-            body.type = 'triangle';
-            shimmer.type = 'sine';
-            body.frequency.setValueAtTime(frequency, startAt);
-            shimmer.frequency.setValueAtTime(frequency * 2.01, startAt);
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1400, startAt);
+            track.play().catch(() => {});
+        }
 
-            gain.gain.setValueAtTime(0.0001, startAt);
-            gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.018);
-            gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
-
-            body.connect(filter);
-            shimmer.connect(filter);
-            filter.connect(gain);
-            gain.connect(context.destination);
-            body.start(startAt);
-            shimmer.start(startAt);
-            body.stop(startAt + duration + 0.03);
-            shimmer.stop(startAt + duration + 0.03);
+        function pauseMusicThemeTrack() {
+            if (musicThemeTrack) {
+                musicThemeTrack.pause();
+            }
         }
 
         function playScrollTone(direction) {
@@ -984,36 +959,15 @@
             }
 
             const now = Date.now();
-            if (now - lastScrollSoundAt < 170) {
+            if (now - lastScrollSoundAt < 350) {
                 return;
             }
             lastScrollSoundAt = now;
-
-            const context = getScrollAudioContext();
-            if (!context) {
-                return;
-            }
-
-            const toneIndex = scrollMotifIndex;
-            scrollMotifIndex = (scrollMotifIndex + direction + scrollPianoMotif.length) % scrollPianoMotif.length;
-            playPianoNote(scrollPianoMotif[toneIndex], context.currentTime, 0.22, 0.04);
+            playMusicThemeTrack(false);
         }
 
         function playVinylIntroTone() {
-            if (!document.body.classList.contains('music-theme')) {
-                return;
-            }
-
-            const context = getScrollAudioContext();
-            if (!context) {
-                return;
-            }
-
-            const startAt = context.currentTime;
-            vinylIntroMotif.forEach(note => {
-                playPianoNote(note.freq, startAt + note.delay, note.duration, 0.055);
-                playPianoNote(note.freq * 0.5, startAt + note.delay, note.duration + 0.08, 0.026);
-            });
+            playMusicThemeTrack(true);
         }
 
         function dropMusicNote() {
